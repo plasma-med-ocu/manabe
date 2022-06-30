@@ -5,13 +5,14 @@ camera=cv2.VideoCapture(1)
 while True:
     ret, frame = camera.read()# フレームを取得 480*640*3 RGB
     if ret:
-        #cv2.imshow('camera', frame)# フレームを画面に表示
-        lower = np.array([100,0,120])
-        upper = np.array([160,50,255])
+        cv2.imshow('camera', frame)# フレームを画面に表示
+        lower = np.array([125,180,180])
+        upper = np.array([170,200,200])
+        frame=cv2.cvtColor(frame,cv2.COLOR_RGB2HSV)
         frame_mask = cv2.inRange(frame, lower, upper)
-        dst = cv2.bitwise_and(frame, frame, mask=frame_mask)
-        cv2.imshow('camera', dst)
-        if np.min(dst)<50:
+        dst = cv2.bitwise_not(frame, frame, mask=frame_mask)
+        #cv2.imshow('camera', dst)
+        if np.min(dst[:,:,2])>200:
             print("\007")
     else:
         camera=cv2.VideoCapture(1)
